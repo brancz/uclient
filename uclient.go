@@ -80,13 +80,13 @@ func (c *Client) getAPIResource(apiVersion, kind string) (*metav1.APIResourceLis
 }
 
 func newForConfig(groupVersion string, c *rest.Config) (dynamic.Interface, error) {
-	config := *c
-	err := setConfigDefaults(groupVersion, &config)
+	config := rest.CopyConfig(c)
+	err := setConfigDefaults(groupVersion, config)
 	if err != nil {
 		return nil, err
 	}
 
-	return dynamic.NewForConfig(&config)
+	return dynamic.NewForConfig(config)
 }
 
 func setConfigDefaults(groupVersion string, config *rest.Config) error {
